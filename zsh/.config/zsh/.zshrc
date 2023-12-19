@@ -1,50 +1,69 @@
-HISTFILE=~/.config/zsh/.zsh_history
+### HISTORICAL SETTINGS ###
+HISTFILE=${ZDOTDIR:-$HOME/.config/zsh}/.zsh_history
 HISTSIZE=1000
 SAVEHIST=1000
 
-### EXPORT
-export XDG_CONFIG_HOME=$HOME/.config
-export ZDOTDIR=$HOME/.config/zsh/
-export TERM="xterm-256color"        				# getting proper colors
-export EDITOR="/home/jafar/.local/share/bob/nvim-bin/nvim"
+### EXPORTS ###
+export TERM=${TERM:-"xterm-256color"}  # getting proper colors
+
+# Set XDG_CONFIG_HOME if not already set
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
+
+# Set ZDOTDIR if not already set
+export ZDOTDIR=${ZDOTDIR:-"$XDG_CONFIG_HOME/zsh"}
+
+# Set EDITOR if not already set
+export EDITOR=${EDITOR:-vim}
 
 ### ALIASES ###
 alias l='exa -l --icons --git -a'
 alias lt='exa --tree --level=2 --long --icons --git'
-cl() { cd "$@" && l; }
 alias c='clear'
-alias vim="/home/jafar/.local/share/bob/nvim-bin/nvim"
+alias vim=nvim
 
+# Custom function definition
+cl() { cd "$@" && l; }
+
+### INITIALIZATIONS ###
 # Antidote initialization
 source ${ZDOTDIR:-~}/.antidote/antidote.zsh
 antidote load
 
 # fzf
-[ -f "$ZDOTDIR/.fzf.zsh" ] && source "$ZDOTDIR/.fzf.zsh" 
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+source /usr/share/doc/fzf/examples/completion.zsh
 
-### SETTING THE STARSHIP PROMPT ###
+# Setting the Starship prompt
 eval "$(starship init zsh)"
 
+### PATH MODIFICATIONS ###
 # fnm
-export PATH="/home/jafar/.local/share/fnm:$PATH"
+export PATH="$HOME/.local/share/fnm:$PATH"
 eval "`fnm env`"
-bindkey '^ ' autosuggest-accept
 
 # cargo
-[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env" 
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+
+# bob
+nvim_bin_dir="$HOME/.local/share/bob/nvim-bin"
+if [[ ":$PATH:" != *":$nvim_bin_dir:"* ]]; then
+    export PATH="${PATH}:$nvim_bin_dir"
+fi
 
 # pnpm
-export PNPM_HOME="/home/jafar/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
+export PNPM_HOME=${PNPM_HOME:-"$HOME/.local/share/pnpm"}
+if [[ ":$PATH:" != *":$PNPM_HOME:"* ]]; then
+    export PATH="$PNPM_HOME:$PATH"
+fi
 
-## SSH-Keys
+### SSH KEY MANAGEMENT ###
 if ! pgrep ssh-agent > /dev/null 2>&1; then
     eval "$(ssh-agent -s)" > /dev/null 2>&1
     ssh-add ~/.ssh/JafarJuneidi > /dev/null 2>&1
 fi
 
+# Terminate SSH Agent on exit
 trap 'pkill -u "$USER" ssh-agent' EXIT > /dev/null 2>&1
+
+### BINDINGS
+bindkey '^ ' autosuggest-accept
