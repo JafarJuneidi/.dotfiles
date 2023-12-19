@@ -1,0 +1,9 @@
+[submodule "zsh/.config/zsh/.fzf"]
+	path = zsh/.config/zsh/.fzf
+	url = https://github.com/junegunn/fzf
+[submodule "zsh/.config/zsh/.antidote"]
+	path = zsh/.config/zsh/.antidote
+	url = https://github.com/mattmc3/antidote.git
+[submodule "tmux/.config/tmux/plugins/tpm"]
+	path = tmux/.config/tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm
