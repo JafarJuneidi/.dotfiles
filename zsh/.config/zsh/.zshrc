@@ -59,7 +59,7 @@ fi
 ### SSH KEY MANAGEMENT ###
 if ! pgrep ssh-agent > /dev/null 2>&1; then
     eval "$(ssh-agent -s)" > /dev/null 2>&1
-    ssh-add ~/.ssh/JafarJuneidi > /dev/null 2>&1
+    ssh-add ~/.ssh/id_ed25519 > /dev/null 2>&1
 fi
 
 # Terminate SSH Agent on exit
