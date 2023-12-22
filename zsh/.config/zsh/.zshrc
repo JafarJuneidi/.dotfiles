@@ -37,6 +37,12 @@ source /usr/share/doc/fzf/examples/completion.zsh
 eval "$(starship init zsh)"
 
 ### PATH MODIFICATIONS ###
+# SCRIPTS
+SCRIPTS="$HOME/.local/scripts"
+if [[ ":$PATH:" != *":$SCRIPTS"* ]]; then
+    export PATH="$SCRIPTS:$PATH"
+fi
+
 # fnm
 export PATH="$HOME/.local/share/fnm:$PATH"
 eval "`fnm env`"
@@ -45,13 +51,13 @@ eval "`fnm env`"
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 
 # bob
-nvim_bin_dir="$HOME/.local/share/bob/nvim-bin"
-if [[ ":$PATH:" != *":$nvim_bin_dir:"* ]]; then
-    export PATH="${PATH}:$nvim_bin_dir"
+NVIM_BIN="$HOME/.local/share/bob/nvim-bin"
+if [[ ":$PATH:" != *":$NVIM_BIN:"* ]]; then
+    export PATH="$NVIM_BIN:$PATH"
 fi
 
 # pnpm
-export PNPM_HOME=${PNPM_HOME:-"$HOME/.local/share/pnpm"}
+export PNPM_HOME="$HOME/.local/share/pnpm"
 if [[ ":$PATH:" != *":$PNPM_HOME:"* ]]; then
     export PATH="$PNPM_HOME:$PATH"
 fi
@@ -67,3 +73,4 @@ trap 'pkill -u "$USER" ssh-agent' EXIT > /dev/null 2>&1
 
 ### BINDINGS
 bindkey '^ ' autosuggest-accept
+bindkey -s '^f' "tmux-sessionizer\n"
