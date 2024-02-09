@@ -56,6 +56,12 @@ if [[ ":$PATH:" != *":$NVIM_BIN:"* ]]; then
     export PATH="$NVIM_BIN:$PATH"
 fi
 
+# pypoetry, for Cerpro
+POETRY_BIN="$HOME/.local/share/pypoetry/venv/bin"
+if [[ ":$PATH:" != *":$POETRY_BIN:"* ]]; then
+    export PATH="$POETRY_BIN:$PATH"
+fi
+
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
 if [[ ":$PATH:" != *":$PNPM_HOME:"* ]]; then
