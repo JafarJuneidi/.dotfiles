@@ -1,10 +1,8 @@
 local M = {}
--- [[ Basic Keymaps ]]
 
--- Keymaps for better default experience
--- See `:help vim.keymap.set()`
+-- [[ Basic Keymaps ]]
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
-vim.keymap.set({ "n", "v" }, "<leader>n", vim.cmd.Ex, { silent = true })
+vim.keymap.set({ "n", "v" }, "<leader>n", vim.cmd.Ex, { silent = true, desc = "Netrw" })
 vim.keymap.set({ "n" }, "<C-f>", "<cmd>!tmux neww tmux-sessionizer<CR>")
 
 -- Remap for dealing with word wrap
@@ -16,6 +14,39 @@ vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous dia
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+
+-- [[ CMP ]]
+M.map_cmp_keybinds = function(cmp, luasnip)
+	return {
+		["<C-n>"] = cmp.mapping.select_next_item(),
+		["<C-p>"] = cmp.mapping.select_prev_item(),
+		["<C-b>"] = cmp.mapping.scroll_docs(-4),
+		["<C-f>"] = cmp.mapping.scroll_docs(4),
+		["<C-Space>"] = cmp.mapping.complete({}),
+		["<CR>"] = cmp.mapping.confirm({
+			behavior = cmp.ConfirmBehavior.Replace,
+			select = true,
+		}),
+		["<Tab>"] = cmp.mapping(function(fallback)
+			if cmp.visible() then
+				cmp.select_next_item()
+			elseif luasnip.expand_or_locally_jumpable() then
+				luasnip.expand_or_jump()
+			else
+				fallback()
+			end
+		end, { "i", "s" }),
+		["<S-Tab>"] = cmp.mapping(function(fallback)
+			if cmp.visible() then
+				cmp.select_prev_item()
+			elseif luasnip.locally_jumpable(-1) then
+				luasnip.jump(-1)
+			else
+				fallback()
+			end
+		end, { "i", "s" }),
+	}
+end
 
 -- [[ LSP Keybinds ]]
 -- (exports a function to be used in ../../after/plugin/lsp.lua b/c we need a reference to the current buffer) --
@@ -62,42 +93,68 @@ M.map_lsp_keybinds = function(buffer_number)
 	)
 end
 
+-- [[ Git ]]
+M.map_git_keybinds = function(buffer_number, gs)
+	local function map(mode, l, r, opts)
+		opts = opts or {}
+		opts.buffer = buffer_number
+		vim.keymap.set(mode, l, r, opts)
+	end
+
+	-- Navigation
+	map({ "n", "v" }, "]c", function()
+		if vim.wo.diff then
+			return "]c"
+		end
+		vim.schedule(function()
+			gs.next_hunk()
+		end)
+		return "<Ignore>"
+	end, { expr = true, desc = "Jump to next hunk" })
+
+	map({ "n", "v" }, "[c", function()
+		if vim.wo.diff then
+			return "[c"
+		end
+		vim.schedule(function()
+			gs.prev_hunk()
+		end)
+		return "<Ignore>"
+	end, { expr = true, desc = "Jump to previous hunk" })
+
+	-- Actions
+	-- visual mode
+	map("v", "<leader>hs", function()
+		gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+	end, { desc = "stage git hunk" })
+	map("v", "<leader>hr", function()
+		gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+	end, { desc = "reset git hunk" })
+	-- normal mode
+	map("n", "<leader>hs", gs.stage_hunk, { desc = "git stage hunk" })
+	map("n", "<leader>hS", gs.stage_buffer, { desc = "git Stage buffer" })
+	map("n", "<leader>hr", gs.reset_hunk, { desc = "git reset hunk" })
+	map("n", "<leader>hR", gs.reset_buffer, { desc = "git Reset buffer" })
+	map("n", "<leader>hu", gs.undo_stage_hunk, { desc = "undo stage hunk" })
+	map("n", "<leader>hp", gs.preview_hunk, { desc = "preview git hunk" })
+	map("n", "<leader>hb", function()
+		gs.blame_line({ full = false })
+	end, { desc = "git blame line" })
+	map("n", "<leader>hd", gs.diffthis, { desc = "git diff against index" })
+	map("n", "<leader>hD", function()
+		gs.diffthis("~")
+	end, { desc = "git diff against last commit" })
+
+	-- Toggles
+	map("n", "<leader>tb", gs.toggle_current_line_blame, { desc = "toggle git blame line" })
+	map("n", "<leader>td", gs.toggle_deleted, { desc = "toggle git show deleted" })
+
+	-- Text object
+	map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "select git hunk" })
+end
+
 -- [[ Telescope ]]
--- Telescope live_grep in git root
--- Function to find the git root directory based on the current buffer's path
-local function find_git_root()
-	-- Use the current buffer's path as the starting point for the git search
-	local current_file = vim.api.nvim_buf_get_name(0)
-	local current_dir
-	local cwd = vim.fn.getcwd()
-	-- If the buffer is not associated with a file, return nil
-	if current_file == "" then
-		current_dir = cwd
-	else
-		-- Extract the directory from the current file's path
-		current_dir = vim.fn.fnamemodify(current_file, ":h")
-	end
-
-	-- Find the Git root directory from the current file's path
-	local git_root = vim.fn.systemlist("git -C " .. vim.fn.escape(current_dir, " ") .. " rev-parse --show-toplevel")[1]
-	if vim.v.shell_error ~= 0 then
-		print("Not a git repository. Searching on current working directory")
-		return cwd
-	end
-	return git_root
-end
-
--- Custom live_grep function to search in git root
-local function live_grep_git_root()
-	local git_root = find_git_root()
-	if git_root then
-		require("telescope.builtin").live_grep({
-			search_dirs = { git_root },
-		})
-	end
-end
-
-vim.api.nvim_create_user_command("LiveGrepGitRoot", live_grep_git_root, {})
+vim.api.nvim_create_user_command("LiveGrepGitRoot", require("user.helpers").live_grep_git_root, {})
 
 -- See `:help telescope.builtin`
 vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
@@ -132,5 +189,42 @@ vim.keymap.set(
 	require("telescope").extensions.git_worktree.git_worktrees,
 	{ desc = "[S]earch [B]ranches" }
 )
+
+-- [[ Harpoon ]]
+local mark = require("harpoon.mark")
+local ui = require("harpoon.ui")
+
+vim.keymap.set("n", "<leader>a", mark.add_file)
+vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
+
+vim.keymap.set("n", "<C-h>", function()
+	ui.nav_file(1)
+end)
+vim.keymap.set("n", "<C-t>", function()
+	ui.nav_file(2)
+end)
+vim.keymap.set("n", "<C-n>", function()
+	ui.nav_file(3)
+end)
+vim.keymap.set("n", "<C-s>", function()
+	ui.nav_file(4)
+end)
+
+-- [[ Whichkey ]]
+M.map_which_key_normal = {
+	["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
+	["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
+	["<leader>g"] = { name = "[G]it", _ = "which_key_ignore" },
+	["<leader>h"] = { name = "Git [H]unk", _ = "which_key_ignore" },
+	["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
+	["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
+	["<leader>t"] = { name = "[T]oggle", _ = "which_key_ignore" },
+	["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
+}
+
+M.map_which_key_visual = {
+	["<leader>"] = { name = "VISUAL <leader>" },
+	["<leader>h"] = { "Git [H]unk" },
+}
 
 return M
