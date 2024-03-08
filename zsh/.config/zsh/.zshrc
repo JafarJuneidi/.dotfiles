@@ -30,8 +30,8 @@ source ${ZDOTDIR:-~}/.antidote/antidote.zsh
 antidote load
 
 # fzf
-source /usr/share/doc/fzf/examples/key-bindings.zsh
-source /usr/share/doc/fzf/examples/completion.zsh
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
 
 # Setting the Starship prompt
 eval "$(starship init zsh)"

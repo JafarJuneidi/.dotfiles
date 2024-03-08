@@ -1,0 +1,37 @@
+import = ["~/.config/alacritty/themes/themes/gruvbox_dark.toml"]
+
+[window]
+decorations = "Full"
+startup_mode = "Fullscreen"
+opacity = 1.0
+
+[window.padding]
+x = 5
+y = 5
+
+[window.dimensions]
+columns = 100
+lines = 85
+
+[scrolling]
+history = 0
+multiplier = 3
+
+[font]
+size = 12
+
+[font.bold]
+family= "JetBrainsMono Nerd Font"
+style = "Bold"
+
+[font.bold_italic]
+family= "JetBrainsMono Nerd Font"
+style = "Bold Italic"
+
+[font.italic]
+family= "JetBrainsMono Nerd Font"
+style = "Italic"
+
+[font.normal]
+family= "JetBrainsMono Nerd Font"
+style = "Regular"
