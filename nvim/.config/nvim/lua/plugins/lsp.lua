@@ -42,6 +42,11 @@ return {
 						-- diagnostics = { disable = { "missing-fields" } },
 					},
 				},
+				beancount = {
+					init_options = {
+						journal_file = "~/personal/bean/main.beancount",
+					},
+				},
 			}
 
 			-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
@@ -77,6 +82,7 @@ return {
 						on_attach = on_attach,
 						settings = servers[server_name],
 						filetypes = (servers[server_name] or {}).filetypes,
+						init_options = (servers[server_name] or {}).init_options,
 					})
 				end,
 			})
