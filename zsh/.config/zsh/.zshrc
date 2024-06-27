@@ -30,8 +30,7 @@ source ${ZDOTDIR:-~}/.antidote/antidote.zsh
 antidote load
 
 # fzf
-source /usr/share/fzf/key-bindings.zsh
-source /usr/share/fzf/completion.zsh
+source <(fzf --zsh)
 
 # Setting the Starship prompt
 eval "$(starship init zsh)"
@@ -50,11 +49,6 @@ eval "`fnm env`"
 # cargo
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 
-# bob
-NVIM_BIN="$HOME/.local/share/bob/nvim-bin"
-if [[ ":$PATH:" != *":$NVIM_BIN:"* ]]; then
-    export PATH="$NVIM_BIN:$PATH"
-fi
 
 # pypoetry, for Cerpro
 POETRY_BIN="$HOME/.local/share/pypoetry/venv/bin"
