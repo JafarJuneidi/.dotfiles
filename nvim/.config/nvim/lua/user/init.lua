@@ -1,7 +1,0 @@
-require("user.options")
-require("user.lazy")
-require("user.keymaps")
-require("user.highlight_yank")
-require("user.toggle_eslint")
-require("user.toggle_diagnostics")
-require("user.autoformat")
