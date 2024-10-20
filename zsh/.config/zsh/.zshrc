@@ -19,7 +19,7 @@ export EDITOR=${EDITOR:-vim}
 alias l='exa -l --icons --git -a'
 alias lt='exa --tree --level=2 --long --icons --git'
 alias c='clear'
-alias vim=nvim
+# alias vim=nvim
 
 # Custom function definition
 cl() { cd "$@" && l; }
@@ -49,12 +49,6 @@ eval "`fnm env`"
 # cargo
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 
-
-# pypoetry, for Cerpro
-POETRY_BIN="$HOME/.local/share/pypoetry/venv/bin"
-if [[ ":$PATH:" != *":$POETRY_BIN:"* ]]; then
-    export PATH="$POETRY_BIN:$PATH"
-fi
 
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
