@@ -19,7 +19,6 @@ export EDITOR=${EDITOR:-vim}
 alias l='exa -l --icons --git -a'
 alias lt='exa --tree --level=2 --long --icons --git'
 alias c='clear'
-# alias vim=nvim
 
 # Custom function definition
 cl() { cd "$@" && l; }
