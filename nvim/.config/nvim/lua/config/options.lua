@@ -1,7 +1,8 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-vim.g.netrw_banner = 0
+-- wl-clipboard issue when banner is off
+vim.g.netrw_banner = 1
 
 vim.opt.guicursor = 'a:block'
 vim.opt.number = true
