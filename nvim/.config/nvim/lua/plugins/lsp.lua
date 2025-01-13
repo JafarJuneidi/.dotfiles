@@ -5,6 +5,7 @@ return {
         'williamboman/mason-lspconfig.nvim',
         'WhoIsSethDaniel/mason-tool-installer.nvim',
         { 'j-hui/fidget.nvim', opts = {} },
+        'ibhagwan/fzf-lua',
     },
     opts = function()
         ---@class PluginLspOpts
@@ -90,14 +91,16 @@ return {
                     vim.keymap.set(mode, keys, func, { buffer = buffer, desc = 'LSP: ' .. desc })
                 end
 
-                map('gd', vim.lsp.buf.definition, '[d]efinition')
-                map('gr', vim.lsp.buf.references, '[r]eferences')
-                map('gI', vim.lsp.buf.implementation, '[I]mplementation')
-                map('gy', vim.lsp.buf.type_definition, 't[y]pe definition')
-                map('gD', vim.lsp.buf.declaration, '[D]eclaration')
+                local fzf = require 'fzf-lua'
+                map('gd', fzf.lsp_definitions, '[d]efinition')
+                map('gr', fzf.lsp_references, '[r]eferences')
+                map('gI', fzf.lsp_implementations, '[I]mplementation')
+                map('gy', fzf.lsp_typedefs, 't[y]pe definition')
+                map('gD', fzf.lsp_declarations, '[D]eclaration')
+                map('<leader>ca', fzf.lsp_code_actions, '[c]ode [a]ction', { 'n', 'x' })
+
                 map('gK', vim.lsp.buf.signature_help, 'signature help')
                 map('<c-k>', vim.lsp.buf.signature_help, 'signature help', { 'i' })
-                map('<leader>ca', vim.lsp.buf.code_action, '[a]ode [a]ction', { 'n', 'x' })
                 map('<leader>cr', vim.lsp.buf.rename, '[r]ename')
 
                 -- The following two autocommands are used to highlight references of the
