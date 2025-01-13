@@ -29,22 +29,6 @@ return {
         }
     end,
     keys = function()
-        local function open(command, opts)
-            opts = opts or {}
-            return require('fzf-lua')[command](opts)
-        end
-
-        local function fzflua(command, opts)
-            opts = opts or {}
-            return function()
-                open(command, vim.deepcopy(opts))
-            end
-        end
-
-        local function fzflua_config_files()
-            return fzflua('files', { cwd = vim.fn.stdpath 'config' })
-        end
-
         -- Symbol filters
         ---@type table<string, string[]|boolean>?
         local kind_filter = {
@@ -134,10 +118,23 @@ return {
             { '<leader>so', '<CMD>FzfLua oldfiles<CR>', desc = '[o]ld files' },
             { '<leader>sb', '<CMD>FzfLua lgrep_curbuf<CR>', desc = 'Live grep in current [b]uffer' },
             -- { "<leader>sb", "<CMD>FzfLua grep_curbuf<CR>", desc = "Grep in current [B]uffer" },
-            { '<leader>sn', fzflua_config_files(), desc = '[n]eovim files' },
+            {
+                '<leader>sn',
+                function()
+                    require('fzf-lua').files { cwd = '~/Documents/notes' }
+                end,
+                desc = '[n]otes',
+            },
+            {
+                '<leader>sc',
+                function()
+                    require('fzf-lua').files { cwd = vim.fn.stdpath 'config' }
+                end,
+                desc = 'neovim [c]onfig',
+            },
             { '<leader>s"', '<CMD>FzfLua registers<CR>', desc = '["] Registers' },
             { '<leader>sa', '<CMD>FzfLua autocmds<CR>', desc = '[a]uto Commands' },
-            { '<leader>sc', '<CMD>FzfLua commands<CR>', desc = '[r]ommands' },
+            { '<leader>sC', '<CMD>FzfLua commands<CR>', desc = '[C]ommands' },
             { '<leader>sm', '<CMD>FzfLua man_pages<CR>', desc = '[m]an Pages' },
             { '<leader>sq', '<CMD>FzfLua quickfix<CR>', desc = '[q]uickfix List' },
             { '<leader>sw', '<CMD>FzfLua grep_cword<CR>', desc = '[w]ord' },
