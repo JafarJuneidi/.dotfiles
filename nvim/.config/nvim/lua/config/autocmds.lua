@@ -40,53 +40,9 @@ vim.api.nvim_create_autocmd('FileType', {
     end,
 })
 
--- Fix conceallevel for json files
-vim.api.nvim_create_autocmd({ 'FileType' }, {
-    group = augroup 'json_conceal',
-    pattern = { 'json', 'jsonc', 'json5' },
-    callback = function()
-        vim.opt_local.conceallevel = 0
-    end,
-})
-
 -- Remove blanks at the end of lines
 vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-    group = augroup 'removes_trailing_whitespace',
+    group = augroup 'remove_trailing_whitespace',
     pattern = '*',
     command = [[%s/\s\+$//e]],
-})
-
--- close some filetypes with <q>
-vim.api.nvim_create_autocmd('FileType', {
-    group = augroup 'close_with_q',
-    pattern = {
-        'PlenaryTestPopup',
-        'checkhealth',
-        'dbout',
-        'gitsigns-blame',
-        'grug-far',
-        'help',
-        'lspinfo',
-        'neotest-output',
-        'neotest-output-panel',
-        'neotest-summary',
-        'notify',
-        'qf',
-        'spectre_panel',
-        'startuptime',
-        'tsplayground',
-    },
-    callback = function(event)
-        vim.bo[event.buf].buflisted = false
-        vim.schedule(function()
-            vim.keymap.set('n', 'q', function()
-                vim.cmd 'close'
-                pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
-            end, {
-                buffer = event.buf,
-                silent = true,
-                desc = 'Quit buffer',
-            })
-        end)
-    end,
 })

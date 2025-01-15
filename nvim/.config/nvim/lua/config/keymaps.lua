@@ -32,9 +32,6 @@ map('i', ',', ',<c-g>u')
 map('i', '.', '.<c-g>u')
 map('i', ';', ';<c-g>u')
 
---keywordprg
-map('n', '<leader>K', '<CMD>norm! K<CR>', { desc = '[K]eywordprg' })
-
 -- better indenting
 map('v', '<', '<gv')
 map('v', '>', '>gv')
