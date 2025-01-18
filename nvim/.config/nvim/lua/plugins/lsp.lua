@@ -62,7 +62,25 @@ return {
                         },
                     },
                 },
-                pyright = {},
+                pyright = {
+                    settings = {
+                        pyright = {
+                            -- Using Ruff's import organizer
+                            disableOrganizeImports = true,
+                        },
+                        python = {
+                            analysis = {
+                                -- Ignore all files for analysis to exclusively use Ruff for linting
+                                ignore = { '*' },
+                            },
+                        },
+                    },
+                },
+                ruff = {
+                    capabilities = {
+                        hoverProvider = false,
+                    },
+                },
             },
             -- you can do any additional lsp server setup here
             -- return true if you don't want this server to be setup with lspconfig
@@ -92,10 +110,18 @@ return {
                 end
 
                 local fzf = require 'fzf-lua'
-                map('gd', fzf.lsp_definitions, '[d]efinition')
-                map('gr', fzf.lsp_references, '[r]eferences')
-                map('gI', fzf.lsp_implementations, '[I]mplementation')
-                map('gy', fzf.lsp_typedefs, 't[y]pe definition')
+                map('gd', function()
+                    fzf.lsp_definitions { jump_to_single_result = true }
+                end, '[d]efinition')
+                map('gr', function()
+                    fzf.lsp_references { jump_to_single_result = true }
+                end, '[r]eferences')
+                map('gI', function()
+                    fzf.lsp_implementations { jump_to_single_result = true }
+                end, '[I]mplementation')
+                map('gy', function()
+                    fzf.lsp_typedefs { jump_to_single_result = true }
+                end, 't[y]pe definition')
                 map('gD', fzf.lsp_declarations, '[D]eclaration')
                 map('<leader>ca', fzf.lsp_code_actions, '[c]ode [a]ction', { 'n', 'x' })
 
@@ -172,8 +198,6 @@ return {
         local ensure_installed = vim.tbl_keys(servers or {})
         vim.list_extend(ensure_installed, {
             'stylua',
-            'shfmt',
-            'black',
         })
 
         require('mason-tool-installer').setup { ensure_installed = ensure_installed }

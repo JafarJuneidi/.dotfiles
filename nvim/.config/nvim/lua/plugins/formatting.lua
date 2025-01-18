@@ -26,7 +26,7 @@ return {
             formatters_by_ft = {
                 lua = { 'stylua' },
                 -- Conform will run multiple formatters sequentially
-                python = { 'black' },
+                python = { 'ruff' },
                 ocaml = { 'ocamlformat' },
                 -- Conform will run the first available formatter
                 -- javascript = { 'prettierd', 'prettier', stop_after_first = true },
