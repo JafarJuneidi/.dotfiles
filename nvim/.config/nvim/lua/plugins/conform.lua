@@ -28,6 +28,7 @@ return {
                 -- Conform will run multiple formatters sequentially
                 python = { 'ruff' },
                 ocaml = { 'ocamlformat' },
+                c = { 'clang-format' },
                 -- Conform will run the first available formatter
                 -- javascript = { 'prettierd', 'prettier', stop_after_first = true },
             },

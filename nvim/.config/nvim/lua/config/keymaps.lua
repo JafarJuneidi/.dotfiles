@@ -12,10 +12,10 @@ map('n', '<C-j>', '<C-w>j', { desc = 'Go to Lower Window', remap = true })
 map('n', '<C-k>', '<C-w>k', { desc = 'Go to Upper Window', remap = true })
 
 -- Resize window using <ctrl> arrow keys
-map('n', '<M-Up>', '<CMD>resize +2<CR>', { desc = 'Increase Window Height' })
-map('n', '<M-Down>', '<CMD>resize -2<CR>', { desc = 'Decrease Window Height' })
-map('n', '<M-Left>', '<CMD>vertical resize -2<CR>', { desc = 'Decrease Window Width' })
-map('n', '<M-Right>', '<CMD>vertical resize +2<CR>', { desc = 'Increase Window Width' })
+map('n', '<M-k>', '<CMD>resize +2<CR>', { desc = 'Increase Window Height' })
+map('n', '<M-j>', '<CMD>resize -2<CR>', { desc = 'Decrease Window Height' })
+map('n', '<M-l>', '<CMD>vertical resize -2<CR>', { desc = 'Decrease Window Width' })
+map('n', '<M-h>', '<CMD>vertical resize +2<CR>', { desc = 'Increase Window Width' })
 
 -- Move lines
 map('v', 'J', ":m '>+1<CR>gv=gv")
