@@ -30,6 +30,11 @@ antidote load
 
 # fzf
 source <(fzf --zsh)
+export FZF_CTRL_T_OPTS="
+  --walker-skip .git,node_modules,venv
+  --preview 'bat -n --color=always {}'
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+
 
 # Setting the Starship prompt
 eval "$(starship init zsh)"
