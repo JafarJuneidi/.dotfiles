@@ -26,7 +26,7 @@ return {
             formatters_by_ft = {
                 lua = { 'stylua' },
                 -- Conform will run multiple formatters sequentially
-                python = { 'ruff' },
+                python = { 'ruff_format' },
                 ocaml = { 'ocamlformat' },
                 c = { 'clang-format' },
                 -- Conform will run the first available formatter

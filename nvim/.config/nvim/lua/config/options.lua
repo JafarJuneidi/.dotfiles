@@ -41,6 +41,6 @@ vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 8
 vim.opt.inccommand = 'split'
 vim.opt.wrap = false
-vim.opt.conceallevel = 1
+vim.opt.conceallevel = 0
 -- required for bufferline
 vim.opt.termguicolors = true
