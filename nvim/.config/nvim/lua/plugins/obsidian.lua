@@ -16,12 +16,19 @@ return {
         'nvim-lua/plenary.nvim',
     },
     opts = {
-        workspaces = {
-            {
-                name = 'personal',
-                path = '~/Documents/notes/',
-            },
-        },
+        dir = '~/Documents/notes/',
         ui = { enable = false },
+        disable_frontmatter = true,
+        follow_url_func = function(url)
+            -- Open the URL in the default web browser.
+            -- vim.fn.jobstart({"xdg-open", url})  -- linux
+            vim.ui.open(url) -- need Neovim 0.10.0+
+        end,
+        follow_img_func = function(img)
+            vim.fn.jobstart { 'xdg-open', img } -- linux
+        end,
+        picker = {
+            name = 'fzf-lua',
+        },
     },
 }
