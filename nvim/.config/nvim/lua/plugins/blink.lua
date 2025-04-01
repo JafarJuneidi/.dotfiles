@@ -54,9 +54,11 @@ return {
                 },
             },
 
+            cmdline = {
+                enabled = false,
+            },
             sources = {
                 default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev', 'obsidian', 'obsidian_new', 'obsidian_tags' },
-                cmdline = {},
                 providers = {
                     lazydev = {
                         name = 'LazyDev',

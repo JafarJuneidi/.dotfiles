@@ -111,16 +111,16 @@ return {
 
                 local fzf = require 'fzf-lua'
                 map('gd', function()
-                    fzf.lsp_definitions { jump_to_single_result = true }
+                    fzf.lsp_definitions { jump1 = true }
                 end, '[d]efinition')
                 map('gr', function()
-                    fzf.lsp_references { jump_to_single_result = true }
+                    fzf.lsp_references { jump1 = true }
                 end, '[r]eferences')
                 map('gI', function()
-                    fzf.lsp_implementations { jump_to_single_result = true }
+                    fzf.lsp_implementations { jump1 = true }
                 end, '[I]mplementation')
                 map('gy', function()
-                    fzf.lsp_typedefs { jump_to_single_result = true }
+                    fzf.lsp_typedefs { jump1 = true }
                 end, 't[y]pe definition')
                 map('gD', fzf.lsp_declarations, '[D]eclaration')
                 map('<leader>ca', fzf.lsp_code_actions, '[c]ode [a]ction', { 'n', 'x' })

@@ -29,8 +29,10 @@ return {
                 python = { 'ruff_format' },
                 ocaml = { 'ocamlformat' },
                 c = { 'clang-format' },
+                cpp = { 'clang-format' },
+                markdown = { 'prettier' },
                 -- Conform will run the first available formatter
-                -- javascript = { 'prettierd', 'prettier', stop_after_first = true },
+                javascript = { 'prettier', stop_after_first = true },
             },
         },
         keys = {
