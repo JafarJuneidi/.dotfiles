@@ -104,7 +104,7 @@ return {
             { '<leader>uc', '<CMD>FzfLua colorschemes<CR>', desc = '[c]olorscheme with Preview' },
 
             -- buffer
-            { '<leader>bl', '<CMD>FzfLua buffers sort_mru=true sort_lastused=true<CR>', desc = '[l]ist' },
+            { '<leader>bL', '<CMD>FzfLua buffers sort_mru=true sort_lastused=true<CR>', desc = '[L]ist' },
 
             -- search
             { '<leader>sh', '<CMD>FzfLua help_tags<CR>', desc = '[h]elp Pages' },

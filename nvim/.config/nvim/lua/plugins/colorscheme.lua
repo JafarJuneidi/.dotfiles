@@ -29,7 +29,37 @@ return {
             transparent_mode = false,
         },
         init = function()
-            vim.cmd.colorscheme 'gruvbox'
+            -- vim.cmd.colorscheme 'gruvbox'
+        end,
+    },
+
+    {
+        'sainnhe/gruvbox-material',
+        lazy = false,
+        priority = 1000,
+        opts = {},
+        config = function()
+            --     vim.cmd.colorscheme 'rose-pine-moon'
+        end,
+    },
+
+    {
+        'rebelot/kanagawa.nvim',
+        lazy = false,
+        priority = 1000,
+        -- init = function()
+        --     vim.cmd.colorscheme 'kanagawa'
+        -- end,
+    },
+
+    {
+        'catppuccin/nvim',
+        name = 'catppuccin',
+        lazy = false, -- make sure we load this during startup if it is your main colorscheme
+        priority = 1000, -- make sure to load this before all the other start plugins
+        opts = {},
+        init = function()
+            vim.cmd.colorscheme 'catppuccin-macchiato'
         end,
     },
 
@@ -38,6 +68,9 @@ return {
         lazy = false, -- make sure we load this during startup if it is your main colorscheme
         priority = 1000, -- make sure to load this before all the other start plugins
         opts = {},
+        -- init = function()
+        --     vim.cmd.colorscheme 'tokyonight-storm'
+        -- end,
     },
 
     {
@@ -46,7 +79,7 @@ return {
         priority = 1000, -- make sure to load this before all the other start plugins
         opts = {},
         config = function()
-            -- vim.cmd.colorscheme 'rose-pine'
+            --     vim.cmd.colorscheme 'rose-pine-moon'
         end,
     },
 }

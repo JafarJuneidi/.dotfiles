@@ -4,7 +4,7 @@ HISTSIZE=1000
 SAVEHIST=1000
 
 ### EXPORTS ###
-export TERM=${TERM:-"xterm-256color"}  # getting proper colors
+export TERM=${TERM:-"xterm-256color"}
 
 # Set XDG_CONFIG_HOME if not already set
 export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
@@ -25,19 +25,25 @@ cl() { cd "$@" && l; }
 
 ### INITIALIZATIONS ###
 # Antidote initialization
-source ${ZDOTDIR:-~}/.antidote/antidote.zsh
-antidote load
+ANTIDOTE_SCRIPT="${ZDOTDIR:-~}/.antidote/antidote.zsh"
+if [ -f "$ANTIDOTE_SCRIPT" ]; then
+    source "$ANTIDOTE_SCRIPT"
+    antidote load
+fi
 
 # fzf
-source <(fzf --zsh)
-export FZF_CTRL_T_OPTS="
-  --walker-skip .git,node_modules,venv
-  --preview 'bat -n --color=always {}'
-  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
-
+if command -v fzf > /dev/null; then
+    source <(fzf --zsh)
+    export FZF_CTRL_T_OPTS="
+      --walker-skip .git,node_modules,venv
+      --preview 'bat -n --color=always {}'
+      --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+fi
 
 # Setting the Starship prompt
-eval "$(starship init zsh)"
+if command -v starship > /dev/null; then
+    eval "$(starship init zsh)"
+fi
 
 ### PATH MODIFICATIONS ###
 # SCRIPTS
@@ -47,17 +53,34 @@ if [[ ":$PATH:" != *":$SCRIPTS"* ]]; then
 fi
 
 # fnm
-export PATH="$HOME/.local/share/fnm:$PATH"
-eval "`fnm env`"
+FNM_HOME="$HOME/.local/share/fnm"
+if [ -d "$FNM_HOME" ]; then
+    export PATH="$FNM_HOME:$PATH"
+    eval "`fnm env`"
+fi
 
 # cargo
-[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
-
+RUST_INIT="$HOME/.cargo/env"
+if [ -f "$RUST_INIT" ]; then
+    source "$RUST_INIT"
+fi
 
 # pnpm
-export PNPM_HOME="$HOME/.local/share/pnpm"
-if [[ ":$PATH:" != *":$PNPM_HOME:"* ]]; then
+PNPM_HOME="$HOME/.local/share/pnpm"
+if [ -d "$PNPM_HOME" ] && [[ ":$PATH:" != *":$PNPM_HOME:"* ]]; then
     export PATH="$PNPM_HOME:$PATH"
+fi
+
+# Erlang
+ERLANG_PATH="$HOME/.elixir-install/installs/otp/27.1.2/bin"
+if [ -d "$ERLANG_PATH" ] && [[ ":$PATH:" != *":$ERLANG_PATH:"* ]]; then
+    export PATH="$ERLANG_PATH:$PATH"
+fi
+
+# Elixir
+ELIXIR_PATH="$HOME/.elixir-install/installs/elixir/1.18.1-otp-27/bin"
+if [ -d "$ELIXIR_PATH" ] && [[ ":$PATH:" != *":$ELIXIR_PATH:"* ]]; then
+    export PATH="$ELIXIR_PATH:$PATH"
 fi
 
 ### SSH KEY MANAGEMENT ###

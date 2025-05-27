@@ -38,3 +38,6 @@ map('v', '>', '>gv')
 
 -- diagnostic
 map('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line Diagnostics' })
+
+-- buffer
+map('n', '<leader>bl', '<C-^>', { desc = 'move to [l]ast buffer' })

@@ -27,12 +27,12 @@ return {
                 lua = { 'stylua' },
                 -- Conform will run multiple formatters sequentially
                 python = { 'ruff_format' },
-                ocaml = { 'ocamlformat' },
                 c = { 'clang-format' },
                 cpp = { 'clang-format' },
                 markdown = { 'prettier' },
                 -- Conform will run the first available formatter
                 javascript = { 'prettier', stop_after_first = true },
+                javascriptreact = { 'prettier' },
             },
         },
         keys = {
