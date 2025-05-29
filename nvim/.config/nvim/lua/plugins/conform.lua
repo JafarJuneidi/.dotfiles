@@ -25,14 +25,14 @@ return {
             end,
             formatters_by_ft = {
                 lua = { 'stylua' },
-                -- Conform will run multiple formatters sequentially
-                python = { 'ruff_format' },
+                python = { 'ruff_fix', 'ruff_format', 'ruff_organize_imports' },
                 c = { 'clang-format' },
                 cpp = { 'clang-format' },
                 markdown = { 'prettier' },
-                -- Conform will run the first available formatter
-                javascript = { 'prettier', stop_after_first = true },
+                javascript = { 'prettier' },
                 javascriptreact = { 'prettier' },
+                typescript = { 'prettier' },
+                typescriptreact = { 'prettier' },
             },
         },
         keys = {
