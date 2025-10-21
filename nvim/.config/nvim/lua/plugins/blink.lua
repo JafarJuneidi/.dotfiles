@@ -58,24 +58,12 @@ return {
                 enabled = false,
             },
             sources = {
-                default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev', 'obsidian', 'obsidian_new', 'obsidian_tags' },
+                default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
                 providers = {
                     lazydev = {
                         name = 'LazyDev',
                         module = 'lazydev.integrations.blink',
                         score_offset = 100, -- show at a higher priority than lsp
-                    },
-                    obsidian = {
-                        name = 'obsidian',
-                        module = 'blink.compat.source',
-                    },
-                    obsidian_new = {
-                        name = 'obsidian_new',
-                        module = 'blink.compat.source',
-                    },
-                    obsidian_tags = {
-                        name = 'obsidian_tags',
-                        module = 'blink.compat.source',
                     },
                 },
             },
