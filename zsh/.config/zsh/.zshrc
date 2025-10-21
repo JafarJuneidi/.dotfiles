@@ -16,8 +16,8 @@ export ZDOTDIR=${ZDOTDIR:-"$XDG_CONFIG_HOME/zsh"}
 export EDITOR=${EDITOR:-vim}
 
 ### ALIASES ###
-alias l='exa -l --icons --git -a'
-alias lt='exa --tree --level=2 --long --icons --git'
+alias l='eza -l --icons --git -a'
+alias lt='eza --tree --level=2 --long --icons --git'
 alias c='clear'
 
 # Custom function definition
@@ -32,6 +32,11 @@ if [ -f "$ANTIDOTE_SCRIPT" ]; then
 fi
 
 # fzf
+FZF_PATH="$HOME/.fzf/bin/"
+if [ -d "$FZF_PATH" ]; then
+    export PATH="$FZF_PATH:$PATH"
+fi
+
 if command -v fzf > /dev/null; then
     source <(fzf --zsh)
     export FZF_CTRL_T_OPTS="
@@ -52,11 +57,24 @@ if [[ ":$PATH:" != *":$SCRIPTS"* ]]; then
     export PATH="$SCRIPTS:$PATH"
 fi
 
+# LOCAL_BIN
+LOCAL_BIN="$HOME/.local/bin"
+if [[ ":$PATH:" != *":$LOCAL_BIN"* ]]; then
+    export PATH="$LOCAL_BIN:$PATH"
+fi
+
 # fnm
 FNM_HOME="$HOME/.local/share/fnm"
 if [ -d "$FNM_HOME" ]; then
     export PATH="$FNM_HOME:$PATH"
     eval "`fnm env`"
+fi
+
+# pyenv
+PYENV_HOME="$HOME/.pyenv/bin"
+if [ -d "$PYENV_HOME" ]; then
+    export PATH="$PYENV_HOME:$PATH"
+    eval "$(pyenv init - zsh)"
 fi
 
 # cargo
@@ -82,15 +100,6 @@ ELIXIR_PATH="$HOME/.elixir-install/installs/elixir/1.18.1-otp-27/bin"
 if [ -d "$ELIXIR_PATH" ] && [[ ":$PATH:" != *":$ELIXIR_PATH:"* ]]; then
     export PATH="$ELIXIR_PATH:$PATH"
 fi
-
-### SSH KEY MANAGEMENT ###
-if ! pgrep ssh-agent > /dev/null 2>&1; then
-    eval "$(ssh-agent -s)" > /dev/null 2>&1
-    ssh-add ~/.ssh/id_ed25519 > /dev/null 2>&1
-fi
-
-# Terminate SSH Agent on exit
-trap 'pkill -u "$USER" ssh-agent' EXIT > /dev/null 2>&1
 
 ### BINDINGS
 bindkey '^ ' autosuggest-accept
