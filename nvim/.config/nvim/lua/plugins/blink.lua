@@ -12,7 +12,7 @@ return {
     {
         'saghen/blink.cmp',
         dependencies = 'rafamadriz/friendly-snippets',
-        version = '*',
+        version = '1.*',
         opts_extend = { 'sources.default' },
 
         ---@module 'blink.cmp'
@@ -21,25 +21,11 @@ return {
             keymap = {
                 preset = 'enter',
                 ['<C-y>'] = { 'select_and_accept' },
-            },
-
-            appearance = {
-                -- Sets the fallback highlight groups to nvim-cmp's highlight groups
-                -- Useful for when your theme doesn't support blink.cmp
-                -- Will be removed in a future release
-                use_nvim_cmp_as_default = false,
-                -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-                -- Adjusts spacing to ensure icons are aligned
-                nerd_font_variant = 'mono',
+                ['<C-d>'] = { 'scroll_documentation_down' },
+                ['<C-u>'] = { 'scroll_documentation_up' },
             },
 
             completion = {
-                accept = {
-                    -- experimental auto-brackets support
-                    auto_brackets = {
-                        enabled = true,
-                    },
-                },
                 menu = {
                     draw = {
                         treesitter = { 'lsp' },
@@ -49,14 +35,12 @@ return {
                     auto_show = true,
                     auto_show_delay_ms = 100,
                 },
-                ghost_text = {
-                    enabled = true,
-                },
             },
 
             cmdline = {
                 enabled = false,
             },
+
             sources = {
                 default = { 'lsp', 'path', 'snippets', 'buffer', 'lazydev' },
                 providers = {

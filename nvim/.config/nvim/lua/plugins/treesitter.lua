@@ -10,7 +10,7 @@ return {
         indent = { enable = true },
         autotag = { enable = true },
         auto_install = false,
-        ensure_installed = { 'c', 'lua', 'vim', 'vimdoc', 'query', 'markdown', 'markdown_inline', 'python', 'typescript', 'json' },
+        ensure_installed = { 'c', 'rust', 'lua', 'vim', 'vimdoc', 'query', 'markdown', 'markdown_inline', 'python', 'typescript', 'json' },
         incremental_selection = {
             enable = true,
             keymaps = {
