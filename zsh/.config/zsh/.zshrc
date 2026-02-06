@@ -24,6 +24,12 @@ alias c='clear'
 cl() { cd "$@" && l; }
 
 ### INITIALIZATIONS ###
+# opencode
+OPENCODE_PATH="$HOME/.opencode/bin/"
+if [ -d "$OPENCODE_PATH" ]; then
+    export PATH="$OPENCODE_PATH:$PATH"
+fi
+
 # Antidote initialization
 ANTIDOTE_SCRIPT="${ZDOTDIR:-~}/.antidote/antidote.zsh"
 if [ -f "$ANTIDOTE_SCRIPT" ]; then
@@ -40,7 +46,7 @@ fi
 if command -v fzf > /dev/null; then
     source <(fzf --zsh)
     export FZF_CTRL_T_OPTS="
-      --walker-skip .git,node_modules,venv
+      --walker-skip .git,node_modules,venv,target
       --preview 'bat -n --color=always {}'
       --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 fi
