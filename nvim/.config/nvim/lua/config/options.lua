@@ -11,6 +11,7 @@ vim.opt.mouse = 'a'
 vim.opt.showmode = false
 
 vim.schedule(function()
+    -- Don't forget to install xclip!
     vim.opt.clipboard = 'unnamedplus'
 end)
 vim.opt.tabstop = 4

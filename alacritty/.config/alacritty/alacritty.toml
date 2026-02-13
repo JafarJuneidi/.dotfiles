@@ -40,4 +40,9 @@ family = "JetBrainsMono Nerd Font"
 style = "Regular"
 
 [keyboard]
-bindings = [{ key = "Return", mods = "Alt", action = "ToggleFullscreen" }]
+bindings = [
+  { key = "Return", mods = "Alt", action = "ToggleFullscreen" },
+  # Add Shift+Enter for Opencode (send escape sequence)
+  { key = "Return", mods = "Shift", chars = "\u001b[13;2u" },
+  { key = "V", mods = "Control", action = "Paste" }
+]

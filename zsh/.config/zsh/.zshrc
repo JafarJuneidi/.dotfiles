@@ -28,6 +28,8 @@ cl() { cd "$@" && l; }
 OPENCODE_PATH="$HOME/.opencode/bin/"
 if [ -d "$OPENCODE_PATH" ]; then
     export PATH="$OPENCODE_PATH:$PATH"
+    export OPENCODE_EXPERIMENTAL_LSP_TOOL=true
+    export OPENCODE_ENABLE_EXA=1        # Enable websearch tool
 fi
 
 # Antidote initialization
