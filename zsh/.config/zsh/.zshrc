@@ -45,11 +45,6 @@ if [ -f "$ANTIDOTE_SCRIPT" ]; then
 fi
 
 # fzf
-FZF_PATH="$HOME/.fzf/bin/"
-if [ -d "$FZF_PATH" ]; then
-    export PATH="$FZF_PATH:$PATH"
-fi
-
 if command -v fzf > /dev/null; then
     source <(fzf --zsh)
     export FZF_CTRL_T_OPTS="
@@ -76,18 +71,21 @@ if [[ ":$PATH:" != *":$LOCAL_BIN"* ]]; then
     export PATH="$LOCAL_BIN:$PATH"
 fi
 
+# pyenv
+# PYENV_PATH="$HOME/.pyenv/bin"
+# if [ -d "$PYENV_PATH" ]; then
+#     export PATH="$PYENV_PATH:$PATH"
+#     eval "$(pyenv init - zsh)"
+# fi
+if command -v pyenv &> /dev/null; then
+    eval "$(pyenv init - zsh)"
+fi
+
 # fnm
 FNM_HOME="$HOME/.local/share/fnm"
 if [ -d "$FNM_HOME" ]; then
     export PATH="$FNM_HOME:$PATH"
     eval "`fnm env`"
-fi
-
-# pyenv
-PYENV_HOME="$HOME/.pyenv/bin"
-if [ -d "$PYENV_HOME" ]; then
-    export PATH="$PYENV_HOME:$PATH"
-    eval "$(pyenv init - zsh)"
 fi
 
 # cargo
