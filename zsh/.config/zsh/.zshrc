@@ -23,6 +23,11 @@ alias c='clear'
 # Custom function definition
 cl() { cd "$@" && l; }
 
+# Claude Code with Mason LSP servers on PATH
+claude() {
+    PATH="$HOME/.local/share/nvim/mason/bin:$PATH" command claude "$@"
+}
+
 ### INITIALIZATIONS ###
 # opencode
 OPENCODE_PATH="$HOME/.opencode/bin/"
