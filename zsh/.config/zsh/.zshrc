@@ -82,10 +82,11 @@ if command -v pyenv &> /dev/null; then
 fi
 
 # fnm
-FNM_HOME="$HOME/.local/share/fnm"
+# FNM_HOME="$HOME/.local/share/fnm"
+FNM_HOME="/opt/homebrew/opt/fnm/bin"
 if [ -d "$FNM_HOME" ]; then
-    export PATH="$FNM_HOME:$PATH"
-    eval "`fnm env`"
+  export PATH="$FNM_HOME:$PATH"
+  eval "$(fnm env --use-on-cd --shell zsh)"
 fi
 
 # cargo
