@@ -1,9 +1,10 @@
 return {
     {
         'stevearc/conform.nvim',
-        event = 'VeryLazy',
+        event = { 'BufWritePre' },
+        cmd = { 'ConformInfo' },
         opts = {
-            notify_on_error = false,
+            notify_on_error = true,
             format_on_save = function(bufnr)
                 if not vim.g.format_on_save then
                     return
@@ -33,6 +34,18 @@ return {
                 javascriptreact = { 'prettier' },
                 typescript = { 'prettier' },
                 typescriptreact = { 'prettier' },
+                json = { 'prettier' },
+                jsonc = { 'prettier' },
+                css = { 'prettier' },
+                html = { 'prettier' },
+                yaml = { 'prettier' },
+            },
+            formatters = {
+                prettier = {
+                    -- Prefer the project-local prettier (and its plugins like
+                    -- prettier-plugin-tailwindcss) over the Mason-installed one.
+                    prefer_local = 'node_modules/.bin',
+                },
             },
         },
         keys = {
