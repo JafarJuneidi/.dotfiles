@@ -1,7 +1,7 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 if [[ -z $STOW_FOLDERS ]]; then
-    STOW_FOLDERS="nvim,tmux,zsh,bin,alacritty"
+    STOW_FOLDERS="nvim,tmux,zsh,bin,alacritty,agents"
 fi
 
 
@@ -10,11 +10,20 @@ if [[ -z $DOTFILES ]]; then
 fi
 
 
-pushd $DOTFILES
+cd "$DOTFILES"
 for folder in $(echo $STOW_FOLDERS | sed "s/,/ /g")
 do
     echo "stow $folder"
     stow -D $folder
     stow $folder
 done
-popd
+
+# Mirror ~/.agents/skills -> ~/.claude/skills as symlinks
+if [[ -d $HOME/.agents/skills ]]; then
+    mkdir -p $HOME/.claude/skills
+    shopt -s nullglob
+    for d in "$HOME"/.agents/skills/*/; do
+        name=$(basename "$d")
+        ln -sfn "$HOME/.agents/skills/$name" "$HOME/.claude/skills/$name"
+    done
+fi
